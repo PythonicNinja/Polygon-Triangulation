@@ -44,6 +44,9 @@ class Line(object):
         >>> l = Line(p1=Point(), p2=Point(1,1))
         >>> l.equation()
         (1, 0)
+        >>> l = Line(p1=Point(-1,1), p2=Point(0,0))
+        >>> l.equation()
+        (-1, 0)
         """
         if self.p1.x != self.p2.x:
             a = (self.p1.y - self.p2.y)/(self.p1.x - self.p2.x)
@@ -76,11 +79,9 @@ class Line(object):
                 x = (b2-b1)/(a1-b2)
                 return True, x
         else:
-            if a1 == a2 and b1 != b2:
+            if a1-b2 == 0:
                 return False
-            if line2.p1.x != line2.p2.x:
-                return True
-            if a1 == b2:
+            if a1 == a2 and b1 == b2:
                 return True
             x = (b2-b1)/(a1-b2)
-            return (line2.p1.x <= x) and (x <= line2.p2.x)
+            return (line2.p1.x <= x) and (x > line2.p2.x)

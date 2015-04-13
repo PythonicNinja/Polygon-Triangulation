@@ -22,6 +22,7 @@ class SweepTriangulation(object):
         Point(3,3)
         """
         self.polygon = Polygon(points)
+        self.unsorted_points = points
         self.points = sorted(points, key=lambda key: key.x)
 
     def __repr__(self):
@@ -63,25 +64,22 @@ class SweepTriangulation(object):
                 vk = stack[-1]
                 while len(stack) != 1:
                     item = stack.pop()
-                    # if not Line(vi, item).intersects(Line(self.points[i], vk), in_range=True):
+                    if not Line(vi, item).intersects(Line(self.points[i], vk), in_range=True):
                         # print '1: ', vi, item, vi, vk
-                    lines.append(Line(vi, item))
+                        lines.append(Line(vi, item))
                 stack.pop()
 
                 stack.append(vk)
                 stack.append(vi)
             else:
                 vk = stack.pop()
-                vj = None
                 for j, vj in enumerate(stack):
                     if not Line(vj, vi).intersects(Line(vj, stack[-1]), in_range=True):
                         # print '2: ', vj, vi, vj, vk
                         lines.append(Line(vi, vj))
-                        break
                     vj = stack.pop()
 
-                if vj:
-                    stack.append(vj)
+                stack.append(vj)
                 stack.append(vi)
 
         for i, item in enumerate(stack):
@@ -96,10 +94,15 @@ class SweepTriangulation(object):
 
         lines = self.triangulation()
 
-        x_s = [point.x for point in self.points]
-        y_s = [point.y for point in self.points]
+        x_s, y_s = [point.x for point in self.unsorted_points], [point.y for point in self.unsorted_points]
+        additional = 0
+        while self.unsorted_points[0].x != x_s[-1]:
+            point = self.unsorted_points[additional]
+            x_s.append(point.x)
+            y_s.append(point.y)
+            additional += 1
 
-        plt.plot(x_s, y_s, marker='o', linestyle='', color='r', label='Points')
+        plt.plot(x_s, y_s, marker='o', linestyle='-', color='r', label='Points')
 
         for line in lines:
             plt.plot([line.p1.x, line.p2.x], [line.p1.y, line.p2.y], linestyle='-', color='b')
