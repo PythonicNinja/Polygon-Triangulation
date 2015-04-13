@@ -2,25 +2,25 @@
 # -*- coding: utf-8 -*-
 
 """
-test_PolygonTriangulation
+test_Point
 ----------------------------------
 
-Tests for `PolygonTriangulation` module.
+Tests for `Point` module.
 """
-import doctest
 
 import unittest
+import doctest
 
-from PolygonTriangulation import SweepTriangulation
+from PolygonTriangulation import Point
 
 
-class TestSweepTriangulation(unittest.TestCase):
+class TestPoint(unittest.TestCase):
 
     def setUp(self):
         pass
 
     # def test_docstrings(self):
-    #     doctest.testmod(SweepTriangulation, verbose=True)
+    #     doctest.testmod(Point, verbose=True)
 
     def test_something(self):
         pass
@@ -30,3 +30,4 @@ class TestSweepTriangulation(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

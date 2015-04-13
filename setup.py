@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from distutils.core import setup, Command
 
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
-
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -34,7 +34,7 @@ setup(
         'PolygonTriangulation',
     ],
     package_dir={'PolygonTriangulation':
-                 'PolygonTriangulation'},
+                     'PolygonTriangulation'},
     include_package_data=True,
     install_requires=requirements,
     license="BSD",
