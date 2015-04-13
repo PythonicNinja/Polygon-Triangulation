@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # CREATED ON DATE: 06.04.15
 
+import matplotlib.pyplot as plt
+
 from Point import Point
 from Line import Line
 from Polygon import Polygon
@@ -49,6 +51,7 @@ class SweepTriangulation(object):
         """
         >>> t = SweepTriangulation(points=[Point(-5,2), Point(-3,6), Point(-1,2), Point(1,3), Point(2,6), Point(3,4), Point(4,6), Point(5,1), Point(-1,1), Point(-2,0), Point(-4,0)])
         >>> t.triangulation()
+        [Line(Point(-3,6) <-> Point(-4,0)), Line(Point(-1,2) <-> Point(-2,0)), Line(Point(1,3) <-> Point(-1,1)), Line(Point(2,6) <-> Point(1,3)), Line(Point(3,4) <-> Point(1,3)), Line(Point(4,6) <-> Point(3,4)), Line(Point(4,6) <-> Point(1,3)), Line(Point(5,1) <-> Point(3,4)), Line(Point(5,1) <-> Point(4,6))]
         """
         lines = []
 
@@ -60,9 +63,9 @@ class SweepTriangulation(object):
                 vk = stack[-1]
                 while len(stack) != 1:
                     item = stack.pop()
-                    if not Line(vi, item).intersects(Line(self.points[i], vk), in_range=True):
+                    # if not Line(vi, item).intersects(Line(self.points[i], vk), in_range=True):
                         # print '1: ', vi, item, vi, vk
-                        lines.append(Line(vi, item))
+                    lines.append(Line(vi, item))
                 stack.pop()
 
                 stack.append(vk)
@@ -74,6 +77,7 @@ class SweepTriangulation(object):
                     if not Line(vj, vi).intersects(Line(vj, stack[-1]), in_range=True):
                         # print '2: ', vj, vi, vj, vk
                         lines.append(Line(vi, vj))
+                        break
                     vj = stack.pop()
 
                 if vj:
@@ -85,4 +89,23 @@ class SweepTriangulation(object):
                 lines.append(Line(self.points[-1], item))
         return lines
 
+    def plot(self):
+        '''
+        plots graph of triangulation
+        '''
 
+        lines = self.triangulation()
+
+        x_s = [point.x for point in self.points]
+        y_s = [point.y for point in self.points]
+
+        plt.plot(x_s, y_s, marker='o', linestyle='', color='r', label='Points')
+
+        for line in lines:
+            plt.plot([line.p1.x, line.p2.x], [line.p1.y, line.p2.y], linestyle='-', color='b')
+
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        plt.title('Triangulation')
+        plt.legend()
+        plt.show()
