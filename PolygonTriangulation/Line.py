@@ -79,9 +79,7 @@ class Line(object):
                 x = (b2-b1)/(a1-b2)
                 return True, x
         else:
-            if a1-b2 == 0:
+            if a1+a2 == 0:
                 return False
-            if a1 == a2 and b1 == b2:
-                return True
-            x = (b2-b1)/(a1-b2)
-            return (line2.p1.x <= x) and (x > line2.p2.x)
+            x = -(b2+b1)/(a1+a2)
+            return (line2.p1.x <= x) and (x <= line2.p2.x)

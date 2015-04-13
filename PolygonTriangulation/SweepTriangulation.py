@@ -64,20 +64,21 @@ class SweepTriangulation(object):
                 vk = stack[-1]
                 while len(stack) != 1:
                     item = stack.pop()
-                    if not Line(vi, item).intersects(Line(self.points[i], vk), in_range=True):
+                    # if not Line(vi, item).intersects(Line(self.points[i], vk), in_range=True):
                         # print '1: ', vi, item, vi, vk
-                        lines.append(Line(vi, item))
+                    lines.append(Line(vi, item))
                 stack.pop()
 
                 stack.append(vk)
                 stack.append(vi)
             else:
                 vk = stack.pop()
-                for j, vj in enumerate(stack):
-                    if not Line(vj, vi).intersects(Line(vj, stack[-1]), in_range=True):
-                        # print '2: ', vj, vi, vj, vk
-                        lines.append(Line(vi, vj))
+                while len(stack) != 0:
                     vj = stack.pop()
+                    if not Line(vi, vj).intersects(Line(vj, vk), in_range=True):
+                        lines.append(Line(vi, vj))
+                    else:
+                        break
 
                 stack.append(vj)
                 stack.append(vi)
