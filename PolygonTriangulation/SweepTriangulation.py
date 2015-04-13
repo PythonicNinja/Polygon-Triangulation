@@ -66,8 +66,8 @@ class SweepTriangulation(object):
                     item = stack.pop()
                     # if not Line(vi, item).intersects(Line(self.points[i], vk), in_range=True):
                         # print '1: ', vi, item, vi, vk
-                    lines.append(Line(vi, item))
-                stack.pop()
+                    lines.append(Line(vi, item, color='y'))
+                        # pass
 
                 stack.append(vk)
                 stack.append(vi)
@@ -76,16 +76,17 @@ class SweepTriangulation(object):
                 while len(stack) != 0:
                     vj = stack.pop()
                     if not Line(vi, vj).intersects(Line(vj, vk), in_range=True):
-                        lines.append(Line(vi, vj))
+                        lines.append(Line(vi, vj, color='b'))
                     else:
                         break
 
                 stack.append(vj)
                 stack.append(vi)
 
+        vn = self.points[i+2+1]
         for i, item in enumerate(stack):
-            if i != 0 or i != len(stack):
-                lines.append(Line(self.points[-1], item))
+            if i != 0 or i+1 != len(stack):
+                lines.append(Line(vn, item, color='g'))
         return lines
 
     def plot(self):
@@ -106,7 +107,7 @@ class SweepTriangulation(object):
         plt.plot(x_s, y_s, marker='o', linestyle='-', color='r', label='Points')
 
         for line in lines:
-            plt.plot([line.p1.x, line.p2.x], [line.p1.y, line.p2.y], linestyle='-', color='b')
+            plt.plot([line.p1.x, line.p2.x], [line.p1.y, line.p2.y], linestyle='-', color=line.color)
 
         plt.xlabel('X')
         plt.ylabel('Y')

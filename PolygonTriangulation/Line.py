@@ -10,7 +10,7 @@ class Line(object):
     Class of line which consists of p1, p2
     """
 
-    def __init__(self, p1=Point(0, 0), p2=Point(1, 1)):
+    def __init__(self, p1=Point(0, 0), p2=Point(1, 1), color='b'):
         """
         >>> l = Line()
         >>> l.p1
@@ -20,6 +20,7 @@ class Line(object):
         """
         self.p1 = p1
         self.p2 = p2
+        self.color = color
 
     def dist(self):
         """
@@ -80,6 +81,9 @@ class Line(object):
                 return True, x
         else:
             if a1+a2 == 0:
-                return False
+                return True
+            if a1 == a2 and b1 == b2:
+                return True
             x = -(b2+b1)/(a1+a2)
+
             return (line2.p1.x <= x) and (x <= line2.p2.x)

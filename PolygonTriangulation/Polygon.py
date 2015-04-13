@@ -32,4 +32,3 @@ class Polygon(object):
         'Polygon({Line(Point(0,0) <-> Point(1,1)), Line(Point(1,1) <-> Point(2,2)), Line(Point(2,2) <-> Point(0,0))})'
         """
         return 'Polygon({%s})' % ", ".join(str(line) for line in self.lines)
-
