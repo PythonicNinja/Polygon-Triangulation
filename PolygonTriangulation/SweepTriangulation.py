@@ -37,16 +37,12 @@ class SweepTriangulation(object):
     @classmethod
     def same_chain(cls, point_cmp, found_point):
         """
-        >>> SweepTriangulation.same_chain(Point(0,0), Point(1,1))
+        >>> SweepTriangulation.same_chain(Point(0,0,1), Point(1,1,1))
         True
-        >>> SweepTriangulation.same_chain(Point(1,1), Point(0,0))
+        >>> SweepTriangulation.same_chain(Point(1,1,1), Point(0,0,0))
         False
         """
-        angle = point_cmp.angle(found_point)
-        if 0 <= angle <= 180:
-            return True
-        else:
-            return False
+        return point_cmp.orientation == found_point.orientation
 
     def triangulation(self):
         """
@@ -62,12 +58,9 @@ class SweepTriangulation(object):
             # print vi
             if not SweepTriangulation.same_chain(vi, stack[-1]):
                 vk = stack[-1]
-                while len(stack) != 1:
+                while len(stack) != 0:
                     item = stack.pop()
-                    # if not Line(vi, item).intersects(Line(self.points[i], vk), in_range=True):
-                        # print '1: ', vi, item, vi, vk
                     lines.append(Line(vi, item, color='y'))
-                        # pass
 
                 stack.append(vk)
                 stack.append(vi)
@@ -75,7 +68,7 @@ class SweepTriangulation(object):
                 vk = stack.pop()
                 while len(stack) != 0:
                     vj = stack.pop()
-                    if not Line(vi, vj).intersects(Line(vj, vk), in_range=True):
+                    if 0 <= vj.angle_tree_points(vk, vi) <= 180:
                         lines.append(Line(vi, vj, color='b'))
                     else:
                         break
@@ -85,7 +78,7 @@ class SweepTriangulation(object):
 
         vn = self.points[i+2+1]
         for i, item in enumerate(stack):
-            if i != 0 or i+1 != len(stack):
+            if i not in [0, len(stack)]:
                 lines.append(Line(vn, item, color='g'))
         return lines
 

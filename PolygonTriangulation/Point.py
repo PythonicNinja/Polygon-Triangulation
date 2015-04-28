@@ -19,7 +19,7 @@ class Point(object):
     0
     """
 
-    def __init__(self, x=0, y=0):
+    def __init__(self, x=0, y=0, orientation=1):
         """
         >>> p = Point(0,0)
         >>> p.x
@@ -29,6 +29,7 @@ class Point(object):
         """
         self.x = x
         self.y = y
+        self.orientation = orientation
 
     def dist(self, p):
         """
@@ -57,6 +58,13 @@ class Point(object):
         rads = atan2(dy, dx)
         rads %= 2*pi
         return degrees(rads)
+
+    def angle_tree_points(self, p2, p3):
+        rads = atan2(p2.y - self.y, p2.x - self.x) - atan2(p3.y - self.y, p3.x - self.x)
+        rads %= 2*pi
+        out = degrees(rads)
+        print out
+        return out
 
     def reset(self):
         """

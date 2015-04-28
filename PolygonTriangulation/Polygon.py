@@ -19,10 +19,18 @@ class Polygon(object):
         self.points = points
         self.lines = []
 
+        orientation = 1
         for i, point in enumerate(self.points):
             try:
+                if points[i+1].x > point.x:
+                    orientation = orientation
+                else:
+                    orientation = - 1
+                point.orientation = orientation
+                self.points[i+1].orientation = orientation
                 self.lines.append(Line(point, self.points[i+1]))
             except IndexError:
+                point.orientation = orientation
                 self.lines.append(Line(point, self.points[0]))
 
     def __repr__(self):
